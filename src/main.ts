@@ -1,6 +1,6 @@
 import { NestFactory } from "@nestjs/core";
 import * as dotenv from "dotenv";
-import * as bodyParser from 'body-parser';
+import * as bodyParser from "body-parser";
 import { up, database } from "migrate-mongo";
 import { AppModule } from "./app.module";
 
@@ -26,7 +26,7 @@ async function runMigrations() {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-/*   app.enableCors({
+  app.enableCors({
     credentials: true,
     origin: true,
     methods: 'GET,PUT,POST,PATCH,DELETE,OPTIONS',
@@ -37,7 +37,7 @@ async function bootstrap() {
     bodyParser.json({
       limit: '10mb'
     })
-  ); */
+  )
   await app.listen(port);
   console.log(`Process is listening on ${port}: pid=${process.pid}`);
 }
