@@ -11,6 +11,7 @@ import { EmployeesService } from "./employees.service";
 import { UsersService } from "src/shared/users.service";
 import { EmployeeRole } from "src/shared/models/models";
 import { LocationsService } from "src/shared/locations.service";
+import { AuthService } from "../auth/auth.service.";
 
 @Controller("api/employees")
 export class EmployeesController {
@@ -18,6 +19,7 @@ export class EmployeesController {
     private employeesService: EmployeesService,
     private usersService: UsersService,
     private locationsService: LocationsService,
+    private authService: AuthService
   ) {}
 
   @Post()
@@ -27,7 +29,8 @@ export class EmployeesController {
     @Body("locationId") locationId: string,
     @Body("name") name: string,
   ) {
-    const user = await this.usersService.createUser(username, password);
+    const hash = await this.authService.hashPassword(password);
+    const user = await this.usersService.createUser(username, hash);
     return this.employeesService.createEmployee({
       userId: user._id,
       locationId,

@@ -18,7 +18,7 @@ export class EmployeesService {
       ...employee,
       role: EmployeesService.EMPLOYEE_ROLE,
       inserted: new Date(),
-      updated: new Date()
+      updated: new Date(),
     });
     return {
       ...employee,
@@ -39,7 +39,7 @@ export class EmployeesService {
   }
 
   async findEmployees(): Promise<Employees[]> {
-    return this.collection().find().toArray();
+    return this.collection().find({ role: EmployeesService.EMPLOYEE_ROLE }).toArray();
   }
 
   async deleteEmployee(id: string): Promise<Employees> {

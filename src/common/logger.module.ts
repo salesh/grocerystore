@@ -2,7 +2,6 @@ import { Module } from "@nestjs/common";
 import { createLogger, format, transports } from "winston";
 import * as Transport from "winston-transport";
 import { MyLogger } from "./my-logger";
-import { ConfigService } from "./config.service";
 
 @Module({
   providers: [
@@ -37,7 +36,7 @@ import { ConfigService } from "./config.service";
         // We can add custom transport
 
         const logger = createLogger({
-          level: ConfigService.logLevel(),
+          level: process.env.LOG_LEVEL,
           exitOnError: false,
           format: format.simple(),
           transports: loggerTransports,

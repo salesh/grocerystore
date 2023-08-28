@@ -1,7 +1,6 @@
 import { Injectable, OnModuleInit } from "@nestjs/common";
 import { Db, MongoClient } from "mongodb";
 import { MyLogger } from "../common/my-logger";
-import { ConfigService } from "../common/config.service";
 
 @Injectable()
 export class MongoDbService implements OnModuleInit {
@@ -12,7 +11,7 @@ export class MongoDbService implements OnModuleInit {
   async onModuleInit(): Promise<void> {
     try {
       this.logger.info("Connecting to mongodb...");
-      this._client = await MongoClient.connect(ConfigService.mongoDBUrl());
+      this._client = await MongoClient.connect(process.env.MONGODB_URL ?? 'mongodb://localhost:27017/groceryStore');
       this.logger.info("Connected to mongodb");
     } catch (err) {
       this.logger.error("Could not connect to mongodb", err);

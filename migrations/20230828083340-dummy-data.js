@@ -35,53 +35,53 @@ module.exports = {
     await db.collection('users').insertMany([
       {
         "_id": new mongodb.ObjectId("613f0741fa3b240001e77b02"),
-        "username": "user2",
-        "password": "user1_hashed_password"
+        "username": "alice",
+        "password": "$2b$10$iBtEXN5POSHDdEkanAITtOsXMWWf1QUZ4VCumA.hOAbT.ZqkSLHLm"
       },
       {
         "_id": new mongodb.ObjectId("613f0741fa3b240001e77b03"),
-        "username": "user3",
-        "password": "user3_hashed_password"
+        "username": "bob",
+        "password": "$2b$10$iBtEXN5POSHDdEkanAITtOsXMWWf1QUZ4VCumA.hOAbT.ZqkSLHLm"
       },
       {
         "_id": new mongodb.ObjectId("613f0741fa3b240001e77b04"),
-        "username": "user4",
-        "password": "user4_hashed_password"
+        "username": "charlie",
+        "password": "$2b$10$iBtEXN5POSHDdEkanAITtOsXMWWf1QUZ4VCumA.hOAbT.ZqkSLHLm"
       },
       {
         "_id": new mongodb.ObjectId("613f0741fa3b240001e77b05"),
-        "username": "user5",
-        "password": "user5_hashed_password"
+        "username": "david",
+        "password": "$2b$10$iBtEXN5POSHDdEkanAITtOsXMWWf1QUZ4VCumA.hOAbT.ZqkSLHLm"
       },
       {
         "_id": new mongodb.ObjectId("613f0741fa3b240001e77b06"),
-        "username": "user6",
-        "password": "user6_hashed_password"
+        "username": "eva",
+        "password": "$2b$10$iBtEXN5POSHDdEkanAITtOsXMWWf1QUZ4VCumA.hOAbT.ZqkSLHLm"
       },
       {
         "_id": new mongodb.ObjectId("613f0741fa3b240001e77b07"),
-        "username": "user7",
-        "password": "user7_hashed_password"
+        "username": "frank",
+        "password": "$2b$10$iBtEXN5POSHDdEkanAITtOsXMWWf1QUZ4VCumA.hOAbT.ZqkSLHLm"
       },
       {
         "_id": new mongodb.ObjectId("613f0741fa3b240001e77b08"),
-        "username": "user8",
-        "password": "user8_hashed_password"
+        "username": "grace",
+        "password": "$2b$10$iBtEXN5POSHDdEkanAITtOsXMWWf1QUZ4VCumA.hOAbT.ZqkSLHLm"
       },
       {
         "_id": new mongodb.ObjectId("613f0741fa3b240001e77b09"),
-        "username": "user9",
-        "password": "user9_hashed_password"
+        "username": "hannah",
+        "password": "$2b$10$iBtEXN5POSHDdEkanAITtOsXMWWf1QUZ4VCumA.hOAbT.ZqkSLHLm"
       },
       {
         "_id": new mongodb.ObjectId("613f0741fa3b240001e77b0a"),
-        "username": "user10",
-        "password": "user10_hashed_password"
+        "username": "isaac",
+        "password": "$2b$10$iBtEXN5POSHDdEkanAITtOsXMWWf1QUZ4VCumA.hOAbT.ZqkSLHLm"
       },
       {
         "_id": new mongodb.ObjectId("613f0741fa3b240001e77b0b"),
-        "username": "user11",
-        "password": "user11_hashed_password"
+        "username": "jane",
+        "password": "$2b$10$iBtEXN5POSHDdEkanAITtOsXMWWf1QUZ4VCumA.hOAbT.ZqkSLHLm"
       }
     ]);
     

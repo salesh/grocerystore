@@ -10,6 +10,7 @@ import {
 import { ManagersService } from "./managers.service";
 import { UsersService } from "../shared/users.service";
 import { LocationsService } from "../shared/locations.service";
+import { AuthService } from "../auth/auth.service.";
 
 @Controller("api/managers")
 export class ManagersController {
@@ -17,6 +18,7 @@ export class ManagersController {
     private managersService: ManagersService,
     private usersService: UsersService,
     private locationsService: LocationsService,
+    private authService: AuthService
   ) {}
 
   @Post()
@@ -26,7 +28,8 @@ export class ManagersController {
     @Body("locationId") locationId: string,
     @Body("name") name: string,
   ) {
-    const user = await this.usersService.createUser(username, password);
+    const hash = await this.authService.hashPassword(password);
+    const user = await this.usersService.createUser(username, hash);
     return this.managersService.createManager({
       userId: user._id,
       locationId,
