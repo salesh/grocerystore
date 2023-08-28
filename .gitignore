@@ -20,7 +20,6 @@ yarn-error.log
 *.tsbuildinfo
 
 # tests
-/test
 /coverage
 /.nyc_output
 
