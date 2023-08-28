@@ -2,7 +2,7 @@
 
 const config = {
   mongodb: {
-    url: "mongodb://localhost:27017/groceryStore",
+    url: process.env.MONGODB_URL ?? "mongodb://localhost:27017/groceryStore",
 
     databaseName: "groceryStore",
 

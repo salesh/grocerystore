@@ -31,7 +31,7 @@ module.exports = {
     ])
 
 
-
+    // Users data
     await db.collection('users').insertMany([
       {
         "_id": new mongodb.ObjectId("613f0741fa3b240001e77b02"),
@@ -85,6 +85,7 @@ module.exports = {
       }
     ]);
     
+    // Employees data
     await db.collection('employees').insertMany([
       {
         "_id": new mongodb.ObjectId("623f0741fa3b240001e77c01"),
