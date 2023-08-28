@@ -29,15 +29,15 @@ async function bootstrap() {
   app.enableCors({
     credentials: true,
     origin: true,
-    methods: 'GET,PUT,POST,PATCH,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type, Authorization, x-file-type',
-    exposedHeaders: '*, Authorization'
+    methods: "GET,PUT,POST,PATCH,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type, Authorization, x-file-type",
+    exposedHeaders: "*, Authorization",
   });
   app.use(
     bodyParser.json({
-      limit: '10mb'
-    })
-  )
+      limit: "10mb",
+    }),
+  );
   await app.listen(port);
   console.log(`Process is listening on ${port}: pid=${process.pid}`);
 }

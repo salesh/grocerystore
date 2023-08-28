@@ -1,12 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { MongoDbService } from "../shared/mongo-db.service";
 import { ObjectId } from "mongodb";
-import { Employees } from "src/shared/models/models";
+import { Employees, Locations } from "src/shared/models/models";
 
 @Injectable()
 export class EmployeesService {
   constructor(private mongodbService: MongoDbService) {}
 
+  private static EMPLOYEE_ROLE: string = "EMPLOYEE";
 
   private collection(): any {
     return this.mongodbService.collection("employees");
@@ -14,7 +15,10 @@ export class EmployeesService {
 
   async createEmployee(employee: Employees): Promise<Employees> {
     const result = await this.collection().insertOne({
-      ...employee
+      ...employee,
+      role: EmployeesService.EMPLOYEE_ROLE,
+      inserted: new Date(),
+      updated: new Date()
     });
     return {
       ...employee,
@@ -29,8 +33,8 @@ export class EmployeesService {
         _id: new ObjectId(employee._id),
       },
       {
-        $set: { ...update }
-      }
+        $set: { ...update, updated: new Date() },
+      },
     );
   }
 
@@ -45,9 +49,27 @@ export class EmployeesService {
       },
       {
         $set: {
-          deletedAt: new Date()
-        }
-      }
+          deletedAt: new Date(),
+        },
+      },
     );
+  }
+
+  async findAllEmployeesForLocation(locationId: string): Promise<Employees[]> {
+    return this.collection()
+      .find({ locationId, role: EmployeesService.EMPLOYEE_ROLE })
+      .toArray();
+  }
+
+  async findAllEmployeesForLocationAndLocationDescendants(
+    locations: Locations[],
+  ): Promise<Employees[]> {
+    const locationIds = locations.map((location) => location._id);
+    return this.collection()
+      .find({
+        locationId: { $in: locationIds },
+        role: EmployeesService.EMPLOYEE_ROLE,
+      })
+      .toArray();
   }
 }

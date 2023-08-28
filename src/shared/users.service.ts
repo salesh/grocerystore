@@ -11,10 +11,7 @@ export class UsersService {
     return this.mongodbService.collection("users");
   }
 
-  async createUser(
-    username: string,
-    password: string
-  ) {
+  async createUser(username: string, password: string) {
     const newUser = {
       username,
       password, // Remember to hash the password before saving
@@ -31,10 +28,9 @@ export class UsersService {
   }
 
   async findUser(username: string): Promise<Users> {
-    return this.collection()
-      .findOne({
-          username
-      });
+    return this.collection().findOne({
+      username,
+    });
   }
 
   async updateUser(id: string, random: string): Promise<Users> {
@@ -43,8 +39,8 @@ export class UsersService {
         _id: new ObjectId(id),
       },
       {
-        $set: { random }
-      }
+        $set: { random },
+      },
     );
   }
 
@@ -55,9 +51,9 @@ export class UsersService {
       },
       {
         $set: {
-          deletedAt: new Date()
-        }
-      }
+          deletedAt: new Date(),
+        },
+      },
     );
   }
 }

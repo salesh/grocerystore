@@ -31,7 +31,7 @@ export class ConfigService implements OnModuleInit {
   }
 
   static authSecret() {
-    if (!process.env.AUTH_SECRET) {
+    if (!process.env.SECRET) {
       throw new Error("Environment variable SECRET not set!");
     }
     return process.env.SECRET;

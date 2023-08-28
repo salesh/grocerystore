@@ -161,6 +161,8 @@ module.exports = {
   },
 
   async down(db, client) {
-    return db.collection('locations').drop();
+     await db.collection('locations').drop();
+     await db.collection('employees').drop();
+     await db.collection('users').drop();
   }
 };

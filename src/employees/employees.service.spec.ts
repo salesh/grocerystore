@@ -21,7 +21,10 @@ describe("EmployeesService", () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [EmployeesService, { provide: MongoDbService, useValue: mockMongoDbService }],
+      providers: [
+        EmployeesService,
+        { provide: MongoDbService, useValue: mockMongoDbService },
+      ],
     }).compile();
     employeesService = module.get<EmployeesService>(EmployeesService);
     mongoDbService = module.get<MongoDbService>(MongoDbService);
