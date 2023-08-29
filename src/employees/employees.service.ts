@@ -57,7 +57,7 @@ export class EmployeesService {
     );
   }
 
-  async findAllEmployeesForLocationAndLocationDescendants(
+  async findEmployeesForLocationAndLocationDescendants(
     locations: Locations[],
   ): Promise<Employees[]> {
     const locationIds = locations.map((location) => location._id);

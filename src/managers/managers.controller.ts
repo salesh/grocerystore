@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Post,
   Put,
@@ -19,7 +18,7 @@ import { RolesGuard } from "../guards/roles.guard";
 import { Roles } from "../auth/roles.decorator";
 import Role from "../enums/role.enum";
 import { LocationGuard } from "../guards/location.guard";
-import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
 @Controller("api/managers")
 @ApiTags("managers")

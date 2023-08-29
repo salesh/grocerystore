@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Post,
   Put,
@@ -20,7 +19,7 @@ import { RolesGuard } from "../guards/roles.guard";
 import { Roles } from "../auth/roles.decorator";
 import { LocationGuard } from "../guards/location.guard";
 import Role from "../enums/role.enum";
-import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
 @Controller("api/employees")
 @ApiTags("employees")
@@ -87,7 +86,7 @@ export class EmployeesController {
 
   @Roles(Role.Manager, Role.Employee)
   @Get("locations/:locationId")
-  async findAllEmployeesForLocationAndLocationDescendants(
+  async findEmployeesForLocationAndLocationDescendants(
     @Param("locationId") locationId: string,
   ) {
     const employeeLocation =
@@ -101,7 +100,7 @@ export class EmployeesController {
       allLocations = [...allLocations, ...locationDescendants];
     }
 
-    return this.employeesService.findAllEmployeesForLocationAndLocationDescendants(
+    return this.employeesService.findEmployeesForLocationAndLocationDescendants(
       allLocations,
     );
   }
