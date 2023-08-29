@@ -13,7 +13,10 @@ export class LocationGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const { user } = request;
-    const locationId = request.params.locationId ?? request.body.locationId;
+    const locationId =
+      request.params.locationId ??
+      request.body.locationId ??
+      request.query.locationId;
 
     const isLocationAllowedForEmployee =
       await this.permissionService.isLocationAllowedForEmployee(

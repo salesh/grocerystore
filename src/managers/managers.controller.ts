@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from "@nestjs/common";
 import { ManagersService } from "./managers.service";
@@ -18,10 +19,11 @@ import { RolesGuard } from "../guards/roles.guard";
 import { Roles } from "../auth/roles.decorator";
 import Role from "../enums/role.enum";
 import { LocationGuard } from "../guards/location.guard";
-import { ApiBearerAuth } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
 
 @Controller("api/managers")
-@ApiBearerAuth()
+@ApiTags("managers")
+@ApiBearerAuth("JWT")
 @UseGuards(JwtAuthGuard, RolesGuard, LocationGuard)
 export class ManagersController {
   constructor(
@@ -49,8 +51,8 @@ export class ManagersController {
   }
 
   @Roles(Role.Manager)
-  @Get("")
-  async find(@Body("locationId") locationId: string) {
+  @Get()
+  async findManagers(@Query("locationId") locationId: string) {
     return this.managersService.findManagersByLocationId(locationId);
   }
 

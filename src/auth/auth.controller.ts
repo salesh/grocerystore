@@ -8,9 +8,10 @@ import {
 import { AuthService } from "./auth.service";
 import { UsersService } from "src/shared/users.service";
 import { LocalAuthGuard } from "../guards/local-auth.guard";
-import { ApiBody } from "@nestjs/swagger";
+import { ApiBody, ApiTags } from "@nestjs/swagger";
 import LoginDto from "./login.dto";
 
+@ApiTags("auth")
 @Controller("auth")
 export class AuthController {
   constructor(

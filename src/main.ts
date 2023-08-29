@@ -41,16 +41,22 @@ async function bootstrap() {
     }),
   );
 
-
   const config = new DocumentBuilder()
-    .setTitle('Grocery store')
-    .setDescription('The Grocery store API description')
-    .setVersion('1.0')
-    .addTag('grocery')
-    .addBearerAuth({ type: 'http', scheme: 'Bearer', bearerFormat: 'JWT' } as SecuritySchemeObject, 'Bearer')
+    .setTitle("Grocery store")
+    .setDescription("The Grocery store API description")
+    .setVersion("1.0")
+    .addTag("grocery")
+    .addBearerAuth(
+      {
+        type: "http",
+        scheme: "Bearer",
+        bearerFormat: "JWT",
+      } as SecuritySchemeObject,
+      "JWT",
+    )
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup("api", app, document);
 
   await app.listen(port);
   logger.log(`Process is listening on ${port}: pid=${process.pid}`);

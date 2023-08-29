@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from "@nestjs/common";
 import { EmployeesService } from "./employees.service";
@@ -19,10 +20,11 @@ import { RolesGuard } from "../guards/roles.guard";
 import { Roles } from "../auth/roles.decorator";
 import { LocationGuard } from "../guards/location.guard";
 import Role from "../enums/role.enum";
-import { ApiBearerAuth } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from "@nestjs/swagger";
 
 @Controller("api/employees")
-@ApiBearerAuth()
+@ApiTags("employees")
+@ApiBearerAuth("JWT")
 @UseGuards(JwtAuthGuard, RolesGuard, LocationGuard)
 export class EmployeesController {
   constructor(
@@ -51,7 +53,7 @@ export class EmployeesController {
 
   @Roles(Role.Manager, Role.Employee)
   @Get()
-  async findEmployees(@Body("locationId") locationId: string) {
+  async findEmployees(@Query("locationId") locationId: string) {
     return this.employeesService.findEmployeesByLocationId(locationId);
   }
 
