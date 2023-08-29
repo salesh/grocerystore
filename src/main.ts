@@ -39,7 +39,7 @@ async function bootstrap() {
     }),
   );
   await app.listen(port);
-  console.log(`Process is listening on ${port}: pid=${process.pid}`);
+  logger.log(`Process is listening on ${port}: pid=${process.pid}`);
 }
 bootstrap();
 

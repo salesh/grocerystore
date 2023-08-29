@@ -3,22 +3,26 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
+  UnauthorizedException,
   UseGuards,
+  Request,
 } from "@nestjs/common";
 import { ManagersService } from "./managers.service";
 import { UsersService } from "../shared/users.service";
 import { LocationsService } from "../shared/locations.service";
-import { AuthService } from "../auth/auth.service.";
+import { AuthService } from "../auth/auth.service";
 import { JwtAuthGuard } from "../guards/jwt-auth-guard";
 import { RolesGuard } from "../guards/roles.guard";
 import { Roles } from "../auth/roles.decorator";
 import Role from "../enums/role.enum";
+import { LocationGuard } from "../guards/location.guard";
 
 @Controller("api/managers")
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, RolesGuard, LocationGuard)
 export class ManagersController {
   constructor(
     private managersService: ManagersService,
@@ -46,8 +50,8 @@ export class ManagersController {
 
   @Roles(Role.Manager)
   @Get("")
-  async find() {
-    return this.managersService.findManagers();
+  async find(@Body("locationId") locationId: string) {
+    return this.managersService.findManagersByLocationId(locationId);
   }
 
   @Roles(Role.Manager)
@@ -67,21 +71,36 @@ export class ManagersController {
   }
 
   @Roles(Role.Manager)
-  @Get("location/:id")
-  async findAllManagersForLocation(@Param("id") locationId: string) {
-    return this.managersService.findAllManagersForLocation(locationId);
+  @Get("location/:locationId")
+  async findManagersByLocationId(@Param("locationId") locationId: string) {
+    return this.managersService.findManagersByLocationId(locationId);
   }
 
   @Roles(Role.Manager)
-  @Get("locations/:id")
-  async findAllManagersForLocationAndLocationDescendants(
-    @Param("id") locationId: string,
+  @Get("locations/:locationId")
+  async findManagersForLocationAndLocationDescendants(
+    @Param("locationId") locationId: string,
   ) {
-    const location = await this.locationsService.findLocation(locationId);
+    const employeeLocation =
+      await this.locationsService.findLocation(locationId);
+
+    if (!employeeLocation) {
+      throw new NotFoundException("Error", {
+        cause: new Error(),
+        description: `Could not find location, location=${locationId}`,
+      });
+    }
+
     const locationDescendants =
-      await this.locationsService.findLocationDescendants(location);
-    return this.managersService.findAllManagersForLocationAndLocationDescendants(
-      [location, ...locationDescendants],
+      await this.locationsService.findLocationDescendants(employeeLocation);
+
+    let allLocations = [employeeLocation];
+    if (locationDescendants) {
+      allLocations = [...allLocations, ...locationDescendants];
+    }
+
+    return this.managersService.findManagersForLocationAndLocationDescendants(
+      allLocations,
     );
   }
 }

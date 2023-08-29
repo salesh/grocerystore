@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -12,14 +13,15 @@ import { EmployeesService } from "./employees.service";
 import { UsersService } from "../shared/users.service";
 import { EmployeeRole } from "../shared/models/models";
 import { LocationsService } from "src/shared/locations.service";
-import { AuthService } from "../auth/auth.service.";
+import { AuthService } from "../auth/auth.service";
 import { JwtAuthGuard } from "../guards/jwt-auth-guard";
 import { RolesGuard } from "../guards/roles.guard";
 import { Roles } from "../auth/roles.decorator";
+import { LocationGuard } from "../guards/location.guard";
 import Role from "../enums/role.enum";
 
 @Controller("api/employees")
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, RolesGuard, LocationGuard)
 export class EmployeesController {
   constructor(
     private employeesService: EmployeesService,
@@ -28,7 +30,7 @@ export class EmployeesController {
     private authService: AuthService,
   ) {}
 
-  @Roles(Role.Manager, Role.Employee)
+  @Roles(Role.Manager)
   @Post()
   public async createEmployee(
     @Body("username") username: string,
@@ -47,11 +49,11 @@ export class EmployeesController {
 
   @Roles(Role.Manager, Role.Employee)
   @Get()
-  async findEmployees() {
-    return this.employeesService.findEmployees();
+  async findEmployees(@Body("locationId") locationId: string) {
+    return this.employeesService.findEmployeesByLocationId(locationId);
   }
 
-  @Roles(Role.Manager, Role.Employee)
+  @Roles(Role.Manager)
   @Put(":id")
   public async updateEmployee(
     @Param("id") _id: string,
@@ -67,28 +69,42 @@ export class EmployeesController {
     });
   }
 
-  @Roles(Role.Manager, Role.Employee)
+  @Roles(Role.Manager)
   @Delete(":id")
   async deleteEmployee(@Param("id") id: string) {
     return this.employeesService.deleteEmployee(id);
   }
 
   @Roles(Role.Manager, Role.Employee)
-  @Get("location/:id")
-  async findAllEmployeesForLocation(@Param("id") locationId: string) {
-    return this.employeesService.findAllEmployeesForLocation(locationId);
+  @Get("location/:locationId")
+  async findEmployeesByLocationId(@Param("locationId") locationId: string) {
+    return this.employeesService.findEmployeesByLocationId(locationId);
   }
 
   @Roles(Role.Manager, Role.Employee)
-  @Get("locations/:id")
+  @Get("locations/:locationId")
   async findAllEmployeesForLocationAndLocationDescendants(
-    @Param("id") locationId: string,
+    @Param("locationId") locationId: string,
   ) {
-    const location = await this.locationsService.findLocation(locationId);
+    const employeeLocation =
+      await this.locationsService.findLocation(locationId);
+    if (!employeeLocation) {
+      throw new NotFoundException("Error", {
+        cause: new Error(),
+        description: `Could not find location, location=${locationId}`,
+      });
+    }
+
     const locationDescendants =
-      await this.locationsService.findLocationDescendants(location);
+      await this.locationsService.findLocationDescendants(employeeLocation);
+
+    let allLocations = [employeeLocation];
+    if (locationDescendants) {
+      allLocations = [...allLocations, ...locationDescendants];
+    }
+
     return this.employeesService.findAllEmployeesForLocationAndLocationDescendants(
-      [location, ...locationDescendants],
+      allLocations,
     );
   }
 }

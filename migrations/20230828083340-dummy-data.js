@@ -118,8 +118,8 @@ module.exports = {
       {
         "_id": new mongodb.ObjectId("623f0741fa3b240001e77c05"),
         "userId": new mongodb.ObjectId("613f0741fa3b240001e77b06"),
+        "locationId": "Radnja_2",
         "role": "EMPLOYEE",
-        "role": "Radnja_2",
         "name": "Eva"
       },
       {
@@ -156,6 +156,13 @@ module.exports = {
         "locationId": "Radnja_7",
         "role": "EMPLOYEE", 
         "name": "Jane"
+      },
+      {
+        "_id": new mongodb.ObjectId("64edece099c08713cf8dfe20"),
+        "userId": new mongodb.ObjectId("64edece099c08713cf8dfe1f"),
+        "locationId": "Liman",
+        "role": "EMPLOYEE", 
+        "name": "Mirko"
       }
     
     ]);

@@ -32,11 +32,16 @@ export class AuthService {
     return null;
   }
 
-  async generateJwtToken(user: Users, role: EmployeeRole | undefined) {
+  async generateJwtToken(
+    user: Users,
+    role: EmployeeRole | undefined,
+    locationId: string,
+  ) {
     const payload = {
       sub: user._id,
       username: user.username,
       role,
+      locationId,
     };
     return {
       access_token: this.jwtService.sign(payload),

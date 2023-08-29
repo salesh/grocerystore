@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
   UseGuards,
 } from "@nestjs/common";
-import { AuthService } from "./auth.service.";
+import { AuthService } from "./auth.service";
 import { UsersService } from "src/shared/users.service";
 import { LocalAuthGuard } from "../guards/local-auth.guard";
 
@@ -23,9 +23,16 @@ export class AuthController {
     const employee = await this.usersService.findEmployeeByUserId(user._id);
 
     if (!employee) {
-      throw new UnauthorizedException("Missing employee");
+      throw new UnauthorizedException("Error", {
+        cause: new Error(),
+        description: `Missing employee`,
+      });
     }
 
-    return this.authService.generateJwtToken(user, employee?.role);
+    return this.authService.generateJwtToken(
+      user,
+      employee?.role,
+      employee.locationId,
+    );
   }
 }
