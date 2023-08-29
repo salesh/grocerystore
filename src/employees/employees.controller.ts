@@ -6,22 +6,29 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from "@nestjs/common";
 import { EmployeesService } from "./employees.service";
-import { UsersService } from "src/shared/users.service";
-import { EmployeeRole } from "src/shared/models/models";
+import { UsersService } from "../shared/users.service";
+import { EmployeeRole } from "../shared/models/models";
 import { LocationsService } from "src/shared/locations.service";
 import { AuthService } from "../auth/auth.service.";
+import { JwtAuthGuard } from "../guards/jwt-auth-guard";
+import { RolesGuard } from "../guards/roles.guard";
+import { Roles } from "../auth/roles.decorator";
+import Role from "../enums/role.enum";
 
 @Controller("api/employees")
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class EmployeesController {
   constructor(
     private employeesService: EmployeesService,
     private usersService: UsersService,
     private locationsService: LocationsService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
+  @Roles(Role.Manager, Role.Employee)
   @Post()
   public async createEmployee(
     @Body("username") username: string,
@@ -38,11 +45,13 @@ export class EmployeesController {
     });
   }
 
+  @Roles(Role.Manager, Role.Employee)
   @Get()
   async findEmployees() {
     return this.employeesService.findEmployees();
   }
 
+  @Roles(Role.Manager, Role.Employee)
   @Put(":id")
   public async updateEmployee(
     @Param("id") _id: string,
@@ -58,16 +67,19 @@ export class EmployeesController {
     });
   }
 
+  @Roles(Role.Manager, Role.Employee)
   @Delete(":id")
   async deleteEmployee(@Param("id") id: string) {
     return this.employeesService.deleteEmployee(id);
   }
 
+  @Roles(Role.Manager, Role.Employee)
   @Get("location/:id")
   async findAllEmployeesForLocation(@Param("id") locationId: string) {
     return this.employeesService.findAllEmployeesForLocation(locationId);
   }
 
+  @Roles(Role.Manager, Role.Employee)
   @Get("locations/:id")
   async findAllEmployeesForLocationAndLocationDescendants(
     @Param("id") locationId: string,

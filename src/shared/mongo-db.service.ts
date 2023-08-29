@@ -11,7 +11,9 @@ export class MongoDbService implements OnModuleInit {
   async onModuleInit(): Promise<void> {
     try {
       this.logger.info("Connecting to mongodb...");
-      this._client = await MongoClient.connect(process.env.MONGODB_URL ?? 'mongodb://localhost:27017/groceryStore');
+      this._client = await MongoClient.connect(
+        process.env.MONGODB_URL ?? "mongodb://localhost:27017/groceryStore",
+      );
       this.logger.info("Connected to mongodb");
     } catch (err) {
       this.logger.error("Could not connect to mongodb", err);

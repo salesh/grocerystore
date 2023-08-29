@@ -39,7 +39,9 @@ export class EmployeesService {
   }
 
   async findEmployees(): Promise<Employees[]> {
-    return this.collection().find({ role: EmployeesService.EMPLOYEE_ROLE }).toArray();
+    return this.collection()
+      .find({ role: EmployeesService.EMPLOYEE_ROLE })
+      .toArray();
   }
 
   async deleteEmployee(id: string): Promise<Employees> {

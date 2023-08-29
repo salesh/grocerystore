@@ -38,7 +38,9 @@ export class ManagersService {
   }
 
   async findManagers(): Promise<Employees[]> {
-    return this.collection().find({ role: ManagersService.MANAGER_ROLE }).toArray();
+    return this.collection()
+      .find({ role: ManagersService.MANAGER_ROLE })
+      .toArray();
   }
 
   async deleteManager(id: string): Promise<Employees> {

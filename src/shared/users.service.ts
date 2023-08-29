@@ -6,7 +6,7 @@ import { AuthService } from "../auth/auth.service.";
 
 @Injectable()
 export class UsersService {
-  constructor(private mongodbService: MongoDbService) { }
+  constructor(private mongodbService: MongoDbService) {}
 
   private collection(): any {
     return this.mongodbService.collection("users");
@@ -19,7 +19,7 @@ export class UsersService {
   async createUser(username: string, hash: string) {
     const newUser = {
       username,
-      password: hash
+      password: hash,
     };
     const result = await this.collection().insertOne({
       ...newUser,
