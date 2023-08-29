@@ -19,8 +19,10 @@ import { RolesGuard } from "../guards/roles.guard";
 import { Roles } from "../auth/roles.decorator";
 import { LocationGuard } from "../guards/location.guard";
 import Role from "../enums/role.enum";
+import { ApiBearerAuth } from "@nestjs/swagger";
 
 @Controller("api/employees")
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard, LocationGuard)
 export class EmployeesController {
   constructor(
@@ -88,12 +90,6 @@ export class EmployeesController {
   ) {
     const employeeLocation =
       await this.locationsService.findLocation(locationId);
-    if (!employeeLocation) {
-      throw new NotFoundException("Error", {
-        cause: new Error(),
-        description: `Could not find location, location=${locationId}`,
-      });
-    }
 
     const locationDescendants =
       await this.locationsService.findLocationDescendants(employeeLocation);

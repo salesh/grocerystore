@@ -7,9 +7,7 @@ import {
   Param,
   Post,
   Put,
-  UnauthorizedException,
   UseGuards,
-  Request,
 } from "@nestjs/common";
 import { ManagersService } from "./managers.service";
 import { UsersService } from "../shared/users.service";
@@ -20,8 +18,10 @@ import { RolesGuard } from "../guards/roles.guard";
 import { Roles } from "../auth/roles.decorator";
 import Role from "../enums/role.enum";
 import { LocationGuard } from "../guards/location.guard";
+import { ApiBearerAuth } from "@nestjs/swagger";
 
 @Controller("api/managers")
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard, LocationGuard)
 export class ManagersController {
   constructor(
@@ -83,13 +83,6 @@ export class ManagersController {
   ) {
     const employeeLocation =
       await this.locationsService.findLocation(locationId);
-
-    if (!employeeLocation) {
-      throw new NotFoundException("Error", {
-        cause: new Error(),
-        description: `Could not find location, location=${locationId}`,
-      });
-    }
 
     const locationDescendants =
       await this.locationsService.findLocationDescendants(employeeLocation);

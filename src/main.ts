@@ -3,6 +3,8 @@ import * as dotenv from "dotenv";
 import * as bodyParser from "body-parser";
 import { up, database } from "migrate-mongo";
 import { AppModule } from "./app.module";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { SecuritySchemeObject } from "@nestjs/swagger/dist/interfaces/open-api-spec.interface";
 
 dotenv.config();
 const logger = console;
@@ -38,6 +40,18 @@ async function bootstrap() {
       limit: "10mb",
     }),
   );
+
+
+  const config = new DocumentBuilder()
+    .setTitle('Grocery store')
+    .setDescription('The Grocery store API description')
+    .setVersion('1.0')
+    .addTag('grocery')
+    .addBearerAuth({ type: 'http', scheme: 'Bearer', bearerFormat: 'JWT' } as SecuritySchemeObject, 'Bearer')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
   await app.listen(port);
   logger.log(`Process is listening on ${port}: pid=${process.pid}`);
 }
