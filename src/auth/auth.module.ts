@@ -11,7 +11,6 @@ import { UsersService } from "../shared/users.service";
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
     PassportModule,
     SharedModule,
     JwtModule.registerAsync({

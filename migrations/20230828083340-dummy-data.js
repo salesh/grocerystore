@@ -30,6 +30,8 @@ module.exports = {
       { _id: "Radnja_9", name: "Radnja 9", left: 41, right: 42, type: "STORE" }
     ])
 
+    // Office and store index
+    await db.collection('locations').createIndex({ left: 1, right:1 });
 
     // Users data
     await db.collection('users').insertMany([

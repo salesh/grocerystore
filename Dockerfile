@@ -19,4 +19,4 @@ ENV PORT 3005
 EXPOSE ${PORT}
 
 # Command to start your NestJS application
-CMD [ "npm", "run", "start:prod" ]
+CMD [ "npm", "run", "start:dev" ]
