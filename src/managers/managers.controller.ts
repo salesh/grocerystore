@@ -18,7 +18,9 @@ import { RolesGuard } from "../guards/roles.guard";
 import { Roles } from "../auth/roles.decorator";
 import Role from "../enums/role.enum";
 import { LocationGuard } from "../guards/location.guard";
-import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiTags } from "@nestjs/swagger";
+import CreateEmployeeDto from "../shared/create-employee.dto";
+import UpdateEmployeeDto from "../shared/update-employee.dto";
 
 @Controller("api/managers")
 @ApiTags("managers")
@@ -33,6 +35,7 @@ export class ManagersController {
   ) {}
 
   @Roles(Role.Manager)
+  @ApiBody({ type: CreateEmployeeDto })
   @Post()
   public async createManager(
     @Body("username") username: string,
@@ -56,6 +59,7 @@ export class ManagersController {
   }
 
   @Roles(Role.Manager)
+  @ApiBody({ type: UpdateEmployeeDto })
   @Put(":id")
   public async updateManager(
     @Param("id") _id: string,
@@ -67,7 +71,10 @@ export class ManagersController {
 
   @Roles(Role.Manager)
   @Delete(":id")
-  async deleteManager(@Param("id") id: string) {
+  async deleteManager(
+    @Param("id") id: string,
+    @Query("locationId") locationId: string,
+  ) {
     return this.managersService.deleteManager(id);
   }
 

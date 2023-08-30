@@ -23,16 +23,16 @@ describe("LocationsService", () => {
 
   describe("findLocation", () => {
     it("should find a location by ID", async () => {
-      const mockFindOne = jest.fn().mockResolvedValue({ _id: "Beograd" });
+      const mockFindOne = jest.fn().mockResolvedValue({ _id: "Grad_Beograd" });
       mockMongoDbService.collection = jest
         .fn()
         .mockReturnValue({ findOne: mockFindOne });
 
-      const locationId = "Beograd";
+      const locationId = "Grad_Beograd";
 
       const result = await locationsService.findLocation(locationId);
 
-      expect(result).toEqual({ _id: "Beograd" });
+      expect(result).toEqual({ _id: "Grad_Beograd" });
       expect(mockMongoDbService.collection).toHaveBeenCalledWith("locations");
       expect(mockFindOne).toHaveBeenCalledWith({ _id: locationId });
     });

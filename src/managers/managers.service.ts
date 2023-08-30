@@ -42,16 +42,9 @@ export class ManagersService {
   }
 
   async deleteManager(managerId: string): Promise<Employees> {
-    return this.collection().updateOne(
-      {
-        _id: new ObjectId(managerId),
-      },
-      {
-        $set: {
-          deletedAt: new Date(),
-        },
-      },
-    );
+    return this.collection().deleteOne({
+      _id: new ObjectId(managerId),
+    });
   }
 
   async findManagersForLocationAndLocationDescendants(

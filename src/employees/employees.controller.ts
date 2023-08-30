@@ -12,14 +12,16 @@ import {
 import { EmployeesService } from "./employees.service";
 import { UsersService } from "../shared/users.service";
 import { EmployeeRole } from "../shared/models/models";
-import { LocationsService } from "src/shared/locations.service";
+import { LocationsService } from "../shared/locations.service";
 import { AuthService } from "../auth/auth.service";
 import { JwtAuthGuard } from "../guards/jwt-auth-guard";
 import { RolesGuard } from "../guards/roles.guard";
 import { Roles } from "../auth/roles.decorator";
 import { LocationGuard } from "../guards/location.guard";
 import Role from "../enums/role.enum";
-import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiTags } from "@nestjs/swagger";
+import CreateEmployeeDto from "../shared/create-employee.dto";
+import UpdateEmployeeDto from "../shared/update-employee.dto";
 
 @Controller("api/employees")
 @ApiTags("employees")
@@ -34,6 +36,7 @@ export class EmployeesController {
   ) {}
 
   @Roles(Role.Manager)
+  @ApiBody({ type: CreateEmployeeDto })
   @Post()
   public async createEmployee(
     @Body("username") username: string,
@@ -57,6 +60,7 @@ export class EmployeesController {
   }
 
   @Roles(Role.Manager)
+  @ApiBody({ type: UpdateEmployeeDto })
   @Put(":id")
   public async updateEmployee(
     @Param("id") _id: string,
@@ -74,7 +78,10 @@ export class EmployeesController {
 
   @Roles(Role.Manager)
   @Delete(":id")
-  async deleteEmployee(@Param("id") id: string) {
+  async deleteEmployee(
+    @Param("id") id: string,
+    @Query("locationId") locationId: string,
+  ) {
     return this.employeesService.deleteEmployee(id);
   }
 

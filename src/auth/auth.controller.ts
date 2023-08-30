@@ -6,7 +6,7 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { UsersService } from "src/shared/users.service";
+import { UsersService } from "../shared/users.service";
 import { LocalAuthGuard } from "../guards/local-auth.guard";
 import { ApiBody, ApiTags } from "@nestjs/swagger";
 import LoginDto from "./login.dto";

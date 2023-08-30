@@ -37,7 +37,7 @@ describe("ManagersService", () => {
         .mockReturnValue({ insertOne: mockInsertOne });
 
       const manager: Employees = {
-        locationId: "Beograd",
+        locationId: "Grad_Beograd",
         role: Role.Manager,
         name: "Mirko",
       };
@@ -83,7 +83,7 @@ describe("ManagersService", () => {
     it("should find managers by location ID", async () => {
       const mockFind = jest.fn().mockReturnValue({
         toArray: jest.fn().mockResolvedValue([
-          { locationId: "Beograd", role: "MANAGER", name: "Mirko" },
+          { locationId: "Grad_Beograd", role: "MANAGER", name: "Mirko" },
           { locationId: "Bezanija", role: "MANAGER", name: "Marko" },
         ]),
       });
@@ -96,7 +96,7 @@ describe("ManagersService", () => {
       const result = await managersService.findManagersByLocationId(locationId);
 
       expect(result).toEqual([
-        { locationId: "Beograd", role: "MANAGER", name: "Mirko" },
+        { locationId: "Grad_Beograd", role: "MANAGER", name: "Mirko" },
         { locationId: "Bezanija", role: "MANAGER", name: "Marko" },
       ]);
       expect(mockMongoDbService.collection).toHaveBeenCalledWith("employees");
@@ -106,10 +106,10 @@ describe("ManagersService", () => {
 
   describe("deleteManager", () => {
     it("should delete a manager", async () => {
-      const mockUpdateOne = jest.fn().mockResolvedValue({ modifiedCount: 1 });
+      const mockDeleteOne = jest.fn().mockResolvedValue({ modifiedCount: 1 });
       mockMongoDbService.collection = jest
         .fn()
-        .mockReturnValue({ updateOne: mockUpdateOne });
+        .mockReturnValue({ deleteOne: mockDeleteOne });
 
       const managerId = "613f0741fa3b240001e77b02";
 
@@ -123,7 +123,7 @@ describe("ManagersService", () => {
     it("should find managers for location and its descendants", async () => {
       const mockFind = jest.fn().mockReturnValue({
         toArray: jest.fn().mockResolvedValue([
-          { locationId: "Beograd", role: "MANAGER", name: "Mirko" },
+          { locationId: "Grad_Beograd", role: "MANAGER", name: "Mirko" },
           { locationId: "Bezanija", role: "MANAGER", name: "Marko" },
         ]),
       });
@@ -132,7 +132,7 @@ describe("ManagersService", () => {
         .mockReturnValue({ find: mockFind });
 
       const locations: Locations[] = [
-        { _id: "Beograd", type: "OFFICE", name: "Beograd" },
+        { _id: "Grad_Beograd", type: "OFFICE", name: "Grad_Beograd" },
         { _id: "Bezanija", type: "OFFICE", name: "Bezanija" },
         { _id: "Radnja_6", type: "STORE", name: "Radnja 6" },
       ];
@@ -142,7 +142,7 @@ describe("ManagersService", () => {
           locations,
         );
       expect(result).toEqual([
-        { locationId: "Beograd", role: "MANAGER", name: "Mirko" },
+        { locationId: "Grad_Beograd", role: "MANAGER", name: "Mirko" },
         { locationId: "Bezanija", role: "MANAGER", name: "Marko" },
       ]);
       expect(mockMongoDbService.collection).toHaveBeenCalledWith("employees");

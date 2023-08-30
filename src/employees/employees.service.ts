@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { MongoDbService } from "../shared/mongo-db.service";
 import { ObjectId } from "mongodb";
-import { Employees, Locations } from "src/shared/models/models";
+import { Employees, Locations } from "../shared/models/models";
 import Role from "../enums/role.enum";
 
 @Injectable()
@@ -45,16 +45,9 @@ export class EmployeesService {
   }
 
   async deleteEmployee(employeeId: string): Promise<Employees> {
-    return this.collection().updateOne(
-      {
-        _id: new ObjectId(employeeId),
-      },
-      {
-        $set: {
-          deletedAt: new Date(),
-        },
-      },
-    );
+    return this.collection().deleteOne({
+      _id: new ObjectId(employeeId),
+    });
   }
 
   async findEmployeesForLocationAndLocationDescendants(

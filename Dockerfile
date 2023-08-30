@@ -13,7 +13,7 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-ENV PORT 3000
+ENV PORT 3005
 
 # Expose the port your NestJS application will listen on
 EXPOSE ${PORT}

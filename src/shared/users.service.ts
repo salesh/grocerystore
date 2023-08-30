@@ -2,7 +2,6 @@ import { Injectable } from "@nestjs/common";
 import { MongoDbService } from "../shared/mongo-db.service";
 import { Employees, Users } from "./models/models";
 import { ObjectId } from "mongodb";
-import { AuthService } from "../auth/auth.service";
 
 @Injectable()
 export class UsersService {
