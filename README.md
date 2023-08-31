@@ -100,6 +100,11 @@ For the production environment, appropriate clusterization can be implemented ht
 To improve scalability we can create application instances for either office and their descendants or we can create each application instance per office/store - the appropriate API gateway would handle traffic. <br/>
 Auto-scaling would help further to improve handling traffic. <br/>
 
+## Caching
+
+Caching office and their descendants - invalidate the cache if the structure changes. <br/>
+Since there is no ability to do changes of structure from code this part of implementation is dismissed.
+
 ## Installation
 
 Please create `.env` file similar to `.env.example` <br/>
