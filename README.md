@@ -21,8 +21,8 @@ Requirements:
 Employees can only see employees that belong to their or descendant nodes. <br/>
 
 
-There are a couple of approaches to implementing hierarchy in MongoDB <br/>
-MongoDB allows various ways to use tree data structures to model large hierarchical or nested data relationships.<br/>
+There are a couple of approaches for implementing hierarchy in MongoDB <br/>
+MongoDB allows different ways to model large hierarchical or nested data relationships.<br/>
 
 1. Parent references
 2. Child references
@@ -34,13 +34,13 @@ MongoDB allows various ways to use tree data structures to model large hierarchi
 Ultimately, the choice depends on factors such as the size of the hierarchy, the nature of the operations we will be performing, and the team's familiarity with the chosen model. <br/>
 Different models have been used successfully in various applications, so it's important to evaluate what fits best for our specific use case. <br/>
 
-I considered a large application with a deep hierarchy with a need for efficient reading and that needs to perform requested operations of querying all descendants of one location in order to find all employees for the requested location and their descendants. <br/>
-Another important thing is that a check query is triggered whenever we need to interact with some location in order to check if we are trying to work with the location where we have permission.  <br/>
+I considered a large application with a deep hierarchy with a need for efficient reading and that needs to perform requested operations of querying all descendants of one office in order to find all employees for the requested office and their descendants. <br/>
+Another important thing is that a check query is triggered whenever we need to interact with some office/store in order to check if we are trying to work with the office/store where we have permission.  <br/>
 
 The Nested Sets pattern was chosen for the purpose of this task.  <br/>
 The Nested Sets pattern provides a fast and efficient solution for finding subtree.  <br/>
-His cost comes with the need to change the hierarchy, but this tradeoff looks acceptable in the assumption that we will not often change our structure.<br/>
-One ability to do it would be remapping the whole structure and simply replacing all with new documents.<br/>
+The cost comes with the need to change the hierarchy, but this tradeoff looks acceptable in the assumption that we will not often change our structure.<br/>
+One ability to do it would be remapping the whole structure and replacing all with new documents.<br/>
 
 <p align="center">
 <img src="https://github.com/salesh/grocerystore/assets/3098030/290af33d-25fe-4e5b-8123-1355f139f3aa">
@@ -55,7 +55,7 @@ This project implements
 * Retrieving all managers for one node
 * Retrieving all managers for one node and all his descendants.
 
-All APIs (except Login API_, require `access token` and query parameter `locationId`
+All APIs (except Login API, require `access Bearer token` and query parameter `locationId`
 
 Swagger is available on http://localhost:PORT/api 
 
@@ -88,10 +88,17 @@ The recommended index is putting the index on left and right values. <br/>
 `await db.collection('locations').createIndex({ left: 1, right:1 });`
 
 For the sake of testing, every user has the same hashed password. <br/>
-This simple password will be shared through `onesecret` in email - in order to respect the security perspective.
+This simple password will be shared through `onesecret` in an email - in order to respect the security perspective. <br/>
 
-Migration will be handled automatically.
-For dummy data please check `20230828083340-dummy-data.js`
+Migration will be handled automatically. <br/>
+For dummy data please check `20230828083340-dummy-data.js` <br/>
+
+For the production environment, appropriate clusterization can be implemented https://nodejs.org/api/cluster.html <br/>
+
+## Scalability
+
+To improve scalability we can create application instances for either office and their descendants or we can create each application instance per office/store - the appropriate API gateway would handle traffic. <br/>
+Auto-scaling would help further to improve handling traffic. <br/>
 
 ## Installation
 
