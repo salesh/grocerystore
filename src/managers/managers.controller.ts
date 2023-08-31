@@ -38,9 +38,9 @@ export class ManagersController {
   @ApiBody({ type: CreateEmployeeDto })
   @Post()
   public async createManager(
+    @Query("locationId") locationId: string,
     @Body("username") username: string,
     @Body("password") password: string,
-    @Body("locationId") locationId: string,
     @Body("name") name: string,
   ) {
     const hash = await this.authService.hashPassword(password);
@@ -62,8 +62,8 @@ export class ManagersController {
   @ApiBody({ type: UpdateEmployeeDto })
   @Put(":id")
   public async updateManager(
+    @Query("locationId") locationId: string,
     @Param("id") _id: string,
-    @Body("locationId") locationId: string,
     @Body("name") name: string,
   ) {
     return this.managersService.updateManager({ _id, locationId, name });
@@ -79,15 +79,15 @@ export class ManagersController {
   }
 
   @Roles(Role.Manager)
-  @Get("location/:locationId")
-  async findManagersByLocationId(@Param("locationId") locationId: string) {
+  @Get("location")
+  async findManagersByLocationId(@Query("locationId") locationId: string) {
     return this.managersService.findManagersByLocationId(locationId);
   }
 
   @Roles(Role.Manager)
-  @Get("locations/:locationId")
+  @Get("locations")
   async findManagersForLocationAndLocationDescendants(
-    @Param("locationId") locationId: string,
+    @Query("locationId") locationId: string,
   ) {
     const employeeLocation =
       await this.locationsService.findLocation(locationId);

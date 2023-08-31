@@ -39,9 +39,9 @@ export class EmployeesController {
   @ApiBody({ type: CreateEmployeeDto })
   @Post()
   public async createEmployee(
+    @Query("locationId") locationId: string,
     @Body("username") username: string,
     @Body("password") password: string,
-    @Body("locationId") locationId: string,
     @Body("name") name: string,
   ) {
     const hash = await this.authService.hashPassword(password);
@@ -64,14 +64,12 @@ export class EmployeesController {
   @Put(":id")
   public async updateEmployee(
     @Param("id") _id: string,
-    @Body("locationId") locationId: string,
-    @Body("role") role: EmployeeRole,
+    @Query("locationId") locationId: string,
     @Body("name") name: string,
   ) {
     return this.employeesService.updateEmployee({
       _id,
       locationId,
-      role,
       name,
     });
   }
@@ -86,15 +84,15 @@ export class EmployeesController {
   }
 
   @Roles(Role.Manager, Role.Employee)
-  @Get("location/:locationId")
-  async findEmployeesByLocationId(@Param("locationId") locationId: string) {
+  @Get("location")
+  async findEmployeesByLocationId(@Query("locationId") locationId: string) {
     return this.employeesService.findEmployeesByLocationId(locationId);
   }
 
   @Roles(Role.Manager, Role.Employee)
-  @Get("locations/:locationId")
+  @Get("locations")
   async findEmployeesForLocationAndLocationDescendants(
-    @Param("locationId") locationId: string,
+    @Query("locationId") locationId: string,
   ) {
     const employeeLocation =
       await this.locationsService.findLocation(locationId);

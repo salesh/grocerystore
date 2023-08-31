@@ -27,12 +27,13 @@ export class ManagersService {
   }
 
   async updateManager(manager: Employees): Promise<Employees> {
+    const { _id, ...update } = manager;
     return this.collection().updateOne(
       {
         _id: new ObjectId(manager._id),
       },
       {
-        $set: { ...manager, updated: new Date() },
+        $set: { ...update, updated: new Date() },
       },
     );
   }

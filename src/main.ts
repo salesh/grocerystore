@@ -8,7 +8,7 @@ import { SecuritySchemeObject } from "@nestjs/swagger/dist/interfaces/open-api-s
 
 dotenv.config();
 const logger = console;
-const port = process.env.PORT ?? 3000;
+const port = process.env.PORT ?? 3005;
 
 async function runMigrations() {
   try {
@@ -45,7 +45,6 @@ async function bootstrap() {
     .setTitle("Grocery store")
     .setDescription("The Grocery store API description")
     .setVersion("1.0")
-    .addTag("grocery")
     .addBearerAuth(
       {
         type: "http",

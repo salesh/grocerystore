@@ -3,6 +3,7 @@ import {
   CanActivate,
   ExecutionContext,
   UnauthorizedException,
+  BadRequestException,
 } from "@nestjs/common";
 import { PermissionsService } from "../shared/permissions.service";
 
@@ -13,10 +14,14 @@ export class LocationGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const { user } = request;
-    const locationId =
-      request.params.locationId ??
-      request.body.locationId ??
-      request.query.locationId;
+    const locationId = request.query.locationId;
+
+    if (!locationId) {
+      throw new BadRequestException("Error", {
+        cause: new Error(),
+        description: `Missing location, location=${locationId}`,
+      });
+    }
 
     const isLocationAllowedForEmployee =
       await this.permissionService.isLocationAllowedForEmployee(

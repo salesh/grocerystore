@@ -14,9 +14,5 @@ export default class CreateEmployeeDto {
 
   @ApiProperty({ type: String })
   @IsString()
-  readonly locationId: string = "";
-
-  @ApiProperty({ type: String })
-  @IsString()
   readonly name: string = "";
 }
